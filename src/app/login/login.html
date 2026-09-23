@@ -1,0 +1,52 @@
+<div class="login-container">
+
+  <div class="login-box">
+
+    <h1>JWT Login</h1>
+
+    <p class="subtitle">Sign in to continue</p>
+
+    <form [formGroup]="loginForm" (ngSubmit)="login()">
+
+      <label for="userName">Username</label>
+
+      <input
+        id="userName"
+        type="text"
+        name="userName"
+        formControlName="userName"
+        placeholder="Enter username"
+        required
+      />
+      @if (loginForm.controls.userName.touched && loginForm.controls.userName.invalid) {
+        <p class="validation-error">Username is required</p>
+      }
+
+      <label for="password">Password</label>
+
+      <input
+        id="password"
+        type="password"
+        name="password"
+        formControlName="password"
+        placeholder="Enter password"
+        required
+      />
+      @if (loginForm.controls.password.touched && loginForm.controls.password.invalid) {
+        <p class="validation-error">Password is required</p>
+      }
+
+      <button type="submit" [disabled]="isLoading">
+        {{ isLoading ? 'Signing in...' : 'Login' }}
+      </button>
+
+
+    </form>
+
+    @if (message) {
+      <p class="message">{{ message }}</p>
+    }
+
+  </div>
+
+</div>
