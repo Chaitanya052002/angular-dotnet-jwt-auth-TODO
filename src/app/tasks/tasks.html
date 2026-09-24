@@ -1,0 +1,146 @@
+<div class="tasks-page">
+
+  <div class="tasks-container">
+
+    <div class="tasks-header">
+      <div>
+        <h1>Tasks</h1>
+        <p class="subtitle">Manage your tasks</p>
+      </div>
+
+      <button class="add-button" (click)="addTask()">
+        + Add Task
+      </button>
+    </div>
+
+    @if (isAdding || isEditing) {
+  <div class="task-form-card">
+
+    <h2>{{ isEditing ? 'Edit Task' : 'Add Task' }}</h2>
+
+    <form
+  [formGroup]="taskForm"
+  (ngSubmit)="isEditing ? updateTask() : createTask()">
+
+      <label for="title">Title</label>
+
+      <input
+        id="title"
+        type="text"
+        formControlName="title"
+        placeholder="Enter task title"
+      />
+
+      @if (taskForm.controls.title.touched && taskForm.controls.title.invalid) {
+        <p class="validation-error">Title is required</p>
+      }
+
+      <label for="description">Description</label>
+
+      <textarea
+        id="description"
+        formControlName="description"
+        placeholder="Enter task description"
+        rows="3"
+      ></textarea>
+
+      @if (taskForm.controls.description.touched && taskForm.controls.description.invalid) {
+        <p class="validation-error">Description is required</p>
+      }
+
+      <label for="status">Status</label>
+
+      <select id="status" formControlName="status">
+        <option value="Pending">Pending</option>
+        <option value="In Progress">In Progress</option>
+        <option value="Completed">Completed</option>
+      </select>
+
+      <div class="form-actions">
+
+        <button type="submit" class="save-button">
+  {{ isEditing ? 'Update Task' : 'Create Task' }}
+</button>
+
+        <button
+          type="button"
+          class="cancel-button"
+          (click)="cancelAdd()">
+          Cancel
+        </button>
+
+      </div>
+
+    </form>
+
+  </div>
+
+  
+}
+
+    @if (isLoading) {
+      <div class="state-message">
+        Loading tasks...
+      </div>
+    }
+
+    @else if (tasks.length > 0) {
+
+      <div class="task-list">
+
+        @for (task of tasks; track task.id) {
+
+          <div class="task-card">
+
+            <div class="task-content">
+
+              <h3>{{ task.title }}</h3>
+
+              <p>{{ task.description }}</p>
+
+            </div>
+
+            <span class="status-badge">
+              {{ task.status }}
+            </span>
+
+          </div>
+
+          <span class="status-badge">
+            {{ task.status }}
+          </span>
+
+          <button
+            type="button"
+            class="edit-button"
+            (click)="editTask(task)">
+          Edit
+          </button>
+
+          <button
+            type="button"
+            class="delete-button"
+            (click)="deleteTask(task.id)">
+            Delete
+          </button>
+        }
+
+      </div>
+
+    }
+
+    @else {
+
+      <div class="state-message">
+        No tasks found.
+      </div>
+
+    }
+
+    @if (message) {
+      <p class="error">{{ message }}</p>
+    }
+
+  </div>
+
+</div>
